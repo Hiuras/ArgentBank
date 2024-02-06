@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/argentBankLogo.png';
 import chat from '../assets/icon-chat.png'
 import money from '../assets/icon-money.png'
