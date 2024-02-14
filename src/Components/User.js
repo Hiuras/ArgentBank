@@ -1,11 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/argentBankLogo.png';
 import '../Styles/Styles.css';
 
-function User() {
+function User(props) {
     return (
         <>
             <nav className="main-nav">
@@ -16,7 +17,7 @@ function User() {
                 <div>
                     <Link className="main-nav-item" to="/User">
                         <FontAwesomeIcon icon={faUserCircle} />
-                        Tony
+                        {props.isLoggedIn ? props.user.name : "Guest"}
                     </Link>
                     <Link className="main-nav-item" to="/">
                         <FontAwesomeIcon icon={faSignOutAlt} />
@@ -26,10 +27,9 @@ function User() {
             </nav>
             <main className="main bg-dark">
                 <div className="header">
-                    <h1>Welcome back<br/> Tony Jarvis! </h1>
+                    <h1>Welcome back<br/> {props.isLoggedIn ? props.user.name : "Guest"}! </h1>
                     <button className="edit-button">Edit name</button>
                 </div>
-                <h2 className="sr-only">Accounts</h2>
                 <section className="account">
                     <div className="account-content-wrapper">
                         <h3 className="account-title">Argent Bank Checking</h3>
@@ -42,22 +42,22 @@ function User() {
                 </section>
                 <section className="account">
                     <div className="account-content-wrapper">
-                    <h3 className="account-title">Argent Bank Savings</h3>
-                    <p className="account-amount">$10,928.42</p>
-                    <p className="account-amount-description">Available Balance</p>
+                        <h3 className="account-title">Argent Bank Savings</h3>
+                        <p className="account-amount">$10,928.42</p>
+                        <p className="account-amount-description">Available Balance</p>
                     </div>
                     <div className="account-content-wrapper cta">
-                    <button className="transaction-button">View transactions</button>
+                        <button className="transaction-button">View transactions</button>
                     </div>
                 </section>
                 <section className="account">
                     <div className="account-content-wrapper">
-                    <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-                    <p className="account-amount">$184.30</p>
-                    <p className="account-amount-description">Current Balance</p>
+                        <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
+                        <p className="account-amount">$184.30</p>
+                        <p className="account-amount-description">Current Balance</p>
                     </div>
                     <div className="account-content-wrapper cta">
-                    <button className="transaction-button">View transactions</button>
+                        <button className="transaction-button">View transactions</button>
                     </div>
                 </section>
             </main>
@@ -68,4 +68,11 @@ function User() {
     );
 }
 
-export default User;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+        user: state.user
+    };
+};
+
+export default connect(mapStateToProps)(User);

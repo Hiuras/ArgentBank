@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux"; // Import the useSelector hook
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import logo from '../assets/argentBankLogo.png';
@@ -9,6 +10,8 @@ import security from '../assets/icon-security.png'
 import '../Styles/Styles.css';
 
 function Accueil() {
+  const user = useSelector(state => state.user); // Access state from Redux store
+
   return (
     <div>
       <div className="banner">

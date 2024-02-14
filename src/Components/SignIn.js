@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux"; // Importez connect depuis react-redux
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +9,34 @@ import money from '../assets/icon-money.png'
 import security from '../assets/icon-security.png'
 import '../Styles/Styles.css';
 
-function SignIn() {
+function SignIn(props) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:3001/api/v1/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+            if (response.ok) {
+                // Connexion réussie, redirigez ou faites ce que vous voulez
+                console.log('Connexion réussie !');
+            } else {
+                // Connexion échouée
+                setError('Identifiants incorrects');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la connexion :', error);
+            setError('Erreur lors de la connexion');
+        }
+    };
+
     return (
         <div>
             <nav className="main-nav">
@@ -24,22 +52,24 @@ function SignIn() {
             </nav>
             <main className="main bg-dark">
                 <section className="sign-in-content">
-                <i class="fa fa-user-circle sign-in-icon"></i>
+                <i className="fa fa-user-circle sign-in-icon"></i>
                 <h1>Sign In</h1>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="input-wrapper">
-                    <label for="username">Username</label>
+                    <label htmlFor="username">Username</label>
                     <input type="text" id="username" />
                     </div>
                     <div className="input-wrapper">
-                    <label for="password">Password</label>
+                    <label htmlFor="password">Password</label>
                     <input type="password" id="password" />
                     </div>
                     <div className="input-remember">
                     <input type="checkbox" id="remember-me" />
-                    <label for="remember-me">Remember me</label>
+                    <label htmlFor="remember-me">Remember me</label>
                     </div>
+                    <button className="sign-in-button" type="submit">Sign In</button>
                 </form>
+                {error && <p className="error-message">{error}</p>}
                 </section>
             </main>
             <footer className="footer">
@@ -49,4 +79,11 @@ function SignIn() {
     )
 }
 
-export default SignIn;
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn,
+        user: state.user
+    };
+};
+
+export default connect(mapStateToProps)(SignIn);
