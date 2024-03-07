@@ -1,0 +1,24 @@
+$color_1: #2c3e50;
+$color_2: #42b983;
+$color_3: #222;
+$color_4: #fff;
+$font-family_1: Avenir, Helvetica, Arial, sans-serif;
+$background-color_1: #12002b;
+$background-color_2: #00bc77;
+$background-color_3: white;
+$background-color_4: #fff;
+$border-color_1: #00bc77;
+
+.main--Error {
+    h1{
+    font-size: 165px;
+    margin-bottom: 0;
+    }
+    h2 {
+        margin-bottom: 50px;
+    }
+    h3 {
+        text-decoration: none;
+        color: $color_1;
+    }
+}

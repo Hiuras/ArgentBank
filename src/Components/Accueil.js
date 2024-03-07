@@ -7,6 +7,7 @@ import logo from '../assets/argentBankLogo.png';
 import chat from '../assets/icon-chat.png'
 import money from '../assets/icon-money.png'
 import security from '../assets/icon-security.png'
+import Footer from "./Footer/Footer";
 import '../Styles/Styles.css';
 
 function Accueil() {
@@ -72,11 +73,7 @@ function Accueil() {
             </div>
           </section>
         </main>
-        <footer className="footer">
-          <p className="footer-text">
-          Copyright 2020 Argent Bank
-          </p>
-        </footer>
+        <Footer />
       </div>
     </div>
   );
