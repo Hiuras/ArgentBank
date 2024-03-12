@@ -8,12 +8,12 @@ import logo from '../../assets/argentBankLogo.png';
 import '../../Styles/Styles.css';
 
 function SignIn(props) {
-  const { username, password, rememberMe, error, setUsername, setPassword, setRememberMe, setError } = props;
+  const { username, password, rememberMe, error, setUsername, setPassword, setRememberMe, setError, history } = props;
   const [loading, setLoading] = useState(false); // Ajoutez un état local pour le chargement
   const [localUsername, setLocalUsername] = useState('');
   const [localPassword, setLocalPassword] = useState('');
   const [localRememberMe, setLocalRememberMe] = useState(false);
-
+  
   useEffect(() => {
     // Récupérer les valeurs du stockage local
     const storedUsername = localStorage.getItem('username');
@@ -77,19 +77,31 @@ function SignIn(props) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username,
+          email: username, // Utilisez 'email' au lieu de 'username'
           password,
         }),
       });
       const data = await response.json();
       console.log('Réponse de l\'API :', data);
-      // Traitez la réponse de l'API ici (par exemple, stockez le jeton d'authentification dans le local storage)
+      
+      if (response.ok) {
+        const token = data.body.token;
+        sessionStorage.setItem('authToken', token); // Stocker le token dans le sessionStorage
+        
+        // Rediriger vers la page utilisateur
+        history.push('/User'); // Utilisez history.push pour rediriger
+      }
+      else {
+        // Affichez un message d'erreur approprié à l'utilisateur
+        setError(data.message);
+      }
+    
       setLoading(false); // Désactivez le chargement après la réception de la réponse
     } catch (error) {
       console.error('Erreur lors de la connexion :', error);
       setError('Erreur lors de la connexion');
       setLoading(false); // Désactivez le chargement en cas d'erreur
-    }
+    }    
   };
 
   return (
