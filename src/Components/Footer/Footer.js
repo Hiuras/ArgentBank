@@ -1,9 +1,10 @@
 function Footer() {
+    const currentYear = new Date().getFullYear();
     return (
         <div>
             <footer className="footer">
           <p className="footer-text">
-          Copyright 2020 Argent Bank
+          Copyright {currentYear} Argent Bank
           </p>
         </footer>
         </div>

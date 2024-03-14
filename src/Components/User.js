@@ -1,78 +1,42 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import logo from '../assets/argentBankLogo.png';
-import '../Styles/Styles.css';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Nav from '../Ressources/Nav/Nav'
+import Header from '../Ressources/Header/Header';
+import Account from '../Ressources/Account/Account';
+import { userProfile } from './actions/authActions';
 
 function User(props) {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const token = useSelector(state => state.login.token || sessionStorage.getItem('token'));
+  
+    useEffect(() => {
+      document.title = "Argent Bank - User Page";
+      dispatch(userProfile(token));
+    }, [dispatch, token]);
+  
+    useEffect(() => {
+      if (token === null) {
+        navigate('/');
+        sessionStorage.clear();
+      }
+    }, [token, navigate]);
+  
     return (
-        <>
-            <nav className="main-nav">
-                <Link to="/" className="main-nav-logo">
-                    <img src={logo} className="main-nav-logo-image" alt="logo" />
-                    <h1 className="sr-only">Argent Bank</h1>
-                </Link>
-                <div>
-                    <Link className="main-nav-item" to="/User">
-                        <FontAwesomeIcon icon={faUserCircle} />
-                        {props.isLoggedIn ? props.user.name : "Guest"}
-                    </Link>
-                    <Link className="main-nav-item" to="/">
-                        <FontAwesomeIcon icon={faSignOutAlt} />
-                        Sign Out
-                    </Link>
-                </div>
-            </nav>
-            <main className="main bg-dark">
-                <div className="header">
-                    <h1>Welcome back<br/> {props.isLoggedIn ? props.user.name : "Guest"}! </h1>
-                    <button className="edit-button">Edit name</button>
-                </div>
-                <section className="account">
-                    <div className="account-content-wrapper">
-                        <h3 className="account-title">Argent Bank Checking</h3>
-                        <p className="account-amount">$2,082.79</p>
-                        <p className="account-amount-description">Available Balance</p>
-                    </div>
-                    <div className="account-content-wrapper cta">
-                        <button className="transaction-button">View transactions</button>
-                    </div>
-                </section>
-                <section className="account">
-                    <div className="account-content-wrapper">
-                        <h3 className="account-title">Argent Bank Savings</h3>
-                        <p className="account-amount">$10,928.42</p>
-                        <p className="account-amount-description">Available Balance</p>
-                    </div>
-                    <div className="account-content-wrapper cta">
-                        <button className="transaction-button">View transactions</button>
-                    </div>
-                </section>
-                <section className="account">
-                    <div className="account-content-wrapper">
-                        <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-                        <p className="account-amount">$184.30</p>
-                        <p className="account-amount-description">Current Balance</p>
-                    </div>
-                    <div className="account-content-wrapper cta">
-                        <button className="transaction-button">View transactions</button>
-                    </div>
-                </section>
-            </main>
-            <footer className="footer">
-                <p className="footer-text">Copyright 2020 Argent Bank</p>
-            </footer>
-        </>
+      <>
+        <Nav />
+        {token && (
+          <main className='main bg-dark'>
+            <Header />
+            <h2 className="sr-only">Accounts</h2>
+            <Account title='Argent Bank Checking (x8349)' amount='$2,082.79' description='Available Balance'/>
+            <Account title='Argent Bank Savings (x6712)' amount='$10,928.42' description='Available Balance'/>
+            <Account title='Argent Bank Credit Card (x8349)' amount='$184.30' description='Current Balance'/>
+          </main>
+        )}
+      </>
     );
-}
+  };
 
-const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.isLoggedIn,
-        user: state.user
-    };
-};
-
-export default connect(mapStateToProps)(User);
+export default User;

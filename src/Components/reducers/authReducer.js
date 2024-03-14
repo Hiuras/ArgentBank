@@ -1,31 +1,26 @@
+// authReducer.js
+
 const initialState = {
-  username: '',
-  password: '',
-  rememberMe: false,
-  error: ''
+  isLoggedIn: false,
+  token: null,
+  error: null
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_USERNAME':
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
-        username: action.payload
+        isLoggedIn: true,
+        token: action.payload.token,
+        error: null
       };
-    case 'SET_PASSWORD':
+    case 'LOGIN_FAIL':
       return {
         ...state,
-        password: action.payload
-      };
-    case 'SET_REMEMBER_ME':
-      return {
-        ...state,
-        rememberMe: action.payload
-      };
-    case 'SET_ERROR':
-      return {
-        ...state,
-        error: action.payload
+        isLoggedIn: false,
+        token: null,
+        error: action.payload.error
       };
     default:
       return state;
