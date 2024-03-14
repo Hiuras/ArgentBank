@@ -23,6 +23,7 @@ export const setError = (error) => ({
   payload: error
 });
 
+
 const BASE_URL = "http://localhost:3001/api/v1";
 
 const getToken = () => {
@@ -30,26 +31,27 @@ const getToken = () => {
   return token ? token.slice(1, -1) : null;
 };
 
-export const login = (email, password, rememberMe) => dispatch => {
-  axios.post(`${BASE_URL}/user/login`, { email, password })
-      .then(response => {
-          if (response && response.data && response.data.body && response.data.body.token) {
-              const token = JSON.stringify(response.data.body.token);
-              rememberMe ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
-              dispatch(loginSuccess(response.data));
-              
-              // useNavigate pour rediriger vers la page utilisateur
-              const navigate = useNavigate();
-              navigate('/User');
-          } else {
-              dispatch(loginFail("Invalid response from server"));
-          }
-      })
-      .catch(error => {
-          // Gérer les erreurs de manière appropriée ici
-          dispatch(loginFail(error.response?.data?.message || "An error occurred during login"));
-      });
+export const login = (email, password, rememberMe) => async (dispatch) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/user/login`, { email, password });
+    
+    if (response && response.data && response.data.body && response.data.body.token) {
+      const token = JSON.stringify(response.data.body.token);
+      rememberMe ? localStorage.setItem("token", token) : sessionStorage.setItem("token", token);
+      dispatch(loginSuccess(response.data));
+      
+      // Redirect to the User page after successful login
+      const navigate = useNavigate();
+      navigate('/User');
+    } else {
+      dispatch(loginFail("Invalid response from server"));
+    }
+  } catch (error) {
+    // Handle errors appropriately here
+    dispatch(loginFail(error.response?.data?.message || "An error occurred during login"));
+  }
 };
+
 
 export const userProfile = () => dispatch => {
   const token = getToken();

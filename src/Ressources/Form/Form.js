@@ -1,21 +1,35 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../Components/actions/authActions'; // Import your login action creator
-
+import React, { useState, useEffect } from 'react'; 
+import { useDispatch, useSelector } from 'react-redux'; // Ajout de useSelector
+import { login } from '../../Components/actions/authActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom'; // Ajout de useNavigate
+import authReducer from '../../Components/reducers/authReducer';
 
 function Form() {
     const dispatch = useDispatch();
+    const navigate = useNavigate(); // Utilisation de useNavigate pour la navigation
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
 
+    // Sélecteurs Redux pour accéder à l'état global
+    const token = useSelector((state) => state.login && state.login.token);
+
+    const error = useSelector((state) => state.login && state.login.error);
+    
+
     const handleLogin = (e) => {
         e.preventDefault();
-        // Dispatch the login action with the provided credentials
         dispatch(login(email, password, rememberMe));
     };
+
+    useEffect(() => {
+        if (token !== null || localStorage.getItem('token') !== null) {
+          navigate('/User');
+        }
+      }, [token, navigate]);
 
     return (
         <section className="sign-in-content">

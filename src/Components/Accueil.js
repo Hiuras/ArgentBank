@@ -7,7 +7,7 @@ import logo from '../assets/argentBankLogo.png';
 import chat from '../assets/icon-chat.png'
 import money from '../assets/icon-money.png'
 import security from '../assets/icon-security.png'
-import Footer from "./Footer/Footer";
+import Footer from "../Ressources/Footer/Footer";
 import '../Styles/Styles.css';
 
 function Accueil() {

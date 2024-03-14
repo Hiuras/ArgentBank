@@ -3,7 +3,7 @@ import logo from '../../assets/argentBankLogo.png';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import Footer from '../Footer/Footer';
+import Footer from '../../Ressources/Footer/Footer';
 import './404.css'
 
 function Error() {

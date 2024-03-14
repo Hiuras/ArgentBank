@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import Nav from '../../Ressources/Nav/Nav';
-import Form from '../../Ressources/SignIn';
+import Form from '../../Ressources/Form/Form';
 import Footer from '../../Ressources/Footer/Footer';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
